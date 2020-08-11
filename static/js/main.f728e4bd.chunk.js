@@ -1,0 +1,2 @@
+(this.webpackJsonpaviasales=this.webpackJsonpaviasales||[]).push([[0],[,,,function(e,n,a){e.exports=a(10)},,,,,function(e,n,a){},function(e,n,a){},function(e,n,a){"use strict";a.r(n);var t=a(0),s=a.n(t),i=a(2),c=a.n(i);a(8),a(9);function o(){return s.a.createElement("div",{className:"App"},"Hello. This is Aviasales application.")}c.a.render(s.a.createElement(o,null),document.getElementById("root"))}],[[3,1,2]]]);
+//# sourceMappingURL=main.f728e4bd.chunk.js.map
