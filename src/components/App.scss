@@ -4,7 +4,9 @@
   padding: 0;
   box-sizing: border-box;
 }
-
+body {
+  background-color: #f3f7fa;
+}
 ul {
   list-style: none;
 }
@@ -18,20 +20,21 @@ ul {
   min-height: 100vh;
   height: 100%;
   padding-bottom: 20px;
-  background-color: #f3f7fa;
   font-family: 'Open Sans', sans-serif;
   color: #4a4a4a;
 }
 .logo {
-  height: 160px;
+  height: 70px;
+  margin-top: 2vw;
+  margin-bottom: 2vw;
   background-image: url(../img/Logo.svg);
   background-repeat: no-repeat;
   background-position: center center;
-  background-size: 50% 50%;
+  background-size: 100% 100%;
 }
 .content {
   display: flex;
-  max-width: 960px;
+  max-width: 750px;
   width: 95%;
   margin: 0 auto;
 }
