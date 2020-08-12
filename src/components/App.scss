@@ -15,10 +15,9 @@ ul {
   color: #2196f3;
 }
 .App {
-  max-width: 960px;
   min-height: 100vh;
   height: 100%;
-  margin: 0 auto;
+  padding-bottom: 20px;
   background-color: #f3f7fa;
   font-family: 'Open Sans', sans-serif;
   color: #4a4a4a;
@@ -32,18 +31,26 @@ ul {
 }
 .content {
   display: flex;
-  padding-left: 100px;
-  padding-right: 100px;
+  max-width: 960px;
+  width: 95%;
+  margin: 0 auto;
 }
 .sidebar {
   display: flex;
   flex-direction: column;
   width: 230px;
   height: 100%;
+  margin-right: 20px;
   padding: 20px;
   background: #ffffff;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
+
+  @media (max-width: 600px) {
+    & {
+      display: none;
+    }
+  }
 
   &__header {
     font-size: 12px;
@@ -87,6 +94,10 @@ ul {
     }
   }
 }
+.ticket-list-wrapper {
+  width: 500px;
+  flex-grow: 1;
+}
 .sort {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -116,11 +127,6 @@ ul {
   border-left: none;
   border-radius: 0 7px 7px 0;
   background: white;
-}
-.ticket-list-wrapper {
-  width: 500px;
-  flex-grow: 1;
-  margin-left: 20px;
 }
 .ticket-list {
   display: grid;
