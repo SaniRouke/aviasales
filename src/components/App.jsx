@@ -14,7 +14,7 @@ export default function App() {
           <label htmlFor="checkbox-all" className="sidebar__label">
             Все
           </label>
-          <input id="checkbox-without" type="checkbox" className="sidebar__checkbox" checked />
+          <input id="checkbox-without" type="checkbox" className="sidebar__checkbox" />
           <label htmlFor="checkbox-without" className="sidebar__label">
             Без пересадок
           </label>
