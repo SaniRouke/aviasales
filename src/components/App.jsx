@@ -1,77 +1,77 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './App.scss';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as actions from './actions';
+import Ticket from './Ticket';
+import Filter from './Filter';
 
-export default function App() {
+const myData = [1, 2, 3];
+
+function App({ reduxState, sortCheapest, sortFastest }) {
+  const data = myData;
+  const { sort } = reduxState;
+
+  const ticketList = data.map((item) => (
+    <li key={item}>
+      <Ticket />
+    </li>
+  ));
+
+  const sortButtons = (
+    <>
+      <button
+        type="button"
+        className={`sort__btn btn-cheapest${sort === 'cheapest' ? ' sort__btn--active' : ''}`}
+        onClick={sortCheapest}
+      >
+        Самый дешевый
+      </button>
+      <button
+        type="button"
+        className={`sort__btn btn-fastest${sort === 'fastest' ? ' sort__btn--active' : ''}`}
+        onClick={sortFastest}
+      >
+        Самый быстрый
+      </button>
+    </>
+  );
+
   return (
     <div className="App">
       <header className="header">
         <div className="logo" />
       </header>
       <main className="content">
-        <aside className="sidebar">
-          <h4 className="sidebar__header">Количество пересадок</h4>
-          <input id="checkbox-all" type="checkbox" className="sidebar__checkbox" />
-          <label htmlFor="checkbox-all" className="sidebar__label">
-            Все
-          </label>
-          <input id="checkbox-without" type="checkbox" className="sidebar__checkbox" />
-          <label htmlFor="checkbox-without" className="sidebar__label">
-            Без пересадок
-          </label>
-          <input id="checkbox-one" type="checkbox" className="sidebar__checkbox" />
-          <label htmlFor="checkbox-one" className="sidebar__label">
-            1 пересадка
-          </label>
-        </aside>
+        <Filter />
         <section className="ticket-list-wrapper">
-          <form action="" className="sort" onSubmit={(event) => event.preventDefault()}>
-            <button type="submit" className="sort__btn btn-cheapest">
-              Самый дешевый
-            </button>
-            <button type="submit" className="sort__btn btn-fastest">
-              Самый быстрый
-            </button>
-          </form>
-          <ul className="ticket-list">
-            <li className="ticket">
-              <div className="ticket__header">
-                <h4 className="ticket__title font--blue">13 400 Р </h4>
-                <div className="ticket__logo">
-                  <img src="" alt="" className="src" />
-                </div>
-              </div>
-              <div className="ticket__flight">
-                <div className="ticket__info">
-                  <p className="font--grey">MOW – HKT</p>
-                  <p>10:45 – 08:00</p>
-                </div>
-                <div className="ticket__info">
-                  <p className="font--grey">В пути</p>
-                  <p>21ч 15м</p>
-                </div>
-                <div className="ticket__info">
-                  <p className="font--grey">2 пересадки</p>
-                  <p>HKG, JNB</p>
-                </div>
-              </div>
-              <div className="ticket__flight">
-                <div className="ticket__info">
-                  <p className="font--grey">MOW – HKT</p>
-                  <p>10:45 – 08:00</p>
-                </div>
-                <div className="ticket__info">
-                  <p className="font--grey">В пути</p>
-                  <p>21ч 15м</p>
-                </div>
-                <div className="ticket__info">
-                  <p className="font--grey">2 пересадки</p>
-                  <p>HKG, JNB</p>
-                </div>
-              </div>
-            </li>
-          </ul>
+          <div className="sort">{sortButtons}</div>
+          <ul className="ticket-list">{ticketList}</ul>
         </section>
       </main>
     </div>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    reduxState: state.sort,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  const { sortCheapest, sortFastest } = bindActionCreators(actions, dispatch);
+  return {
+    sortCheapest,
+    sortFastest,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+
+App.propTypes = {
+  reduxState: PropTypes.objectOf(PropTypes.object).isRequired,
+  sortCheapest: PropTypes.func.isRequired,
+  sortFastest: PropTypes.func.isRequired,
+};

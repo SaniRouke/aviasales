@@ -31,6 +31,7 @@ ul {
   background-repeat: no-repeat;
   background-position: center center;
   background-size: 100% 100%;
+  transition: 0.1s;
 }
 .content {
   display: flex;
@@ -63,6 +64,7 @@ ul {
   }
 
   &__label {
+    width: 100%;
     margin-top: 20px;
     display: inline-flex;
     align-items: center;
@@ -115,21 +117,23 @@ ul {
   letter-spacing: 0.5px;
   text-transform: uppercase;
   color: #4a4a4a;
-  background: #2196f3;
+  background: white;
   border: 1px solid #dfe5ec;
-}
-.sort__btn:focus {
-  outline: none;
+  &:focus {
+    outline: none;
+  }
+  &--active {
+    color: #ffffff;
+    background: #2196f3;
+  }
 }
 .btn-cheapest {
-  color: #ffffff;
   border-right: none;
   border-radius: 7px 0 0 7px;
 }
 .btn-fastest {
   border-left: none;
   border-radius: 0 7px 7px 0;
-  background: white;
 }
 .ticket-list {
   display: grid;
