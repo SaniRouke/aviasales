@@ -1,23 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './App.scss';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import uniqid from 'uniqid';
 import * as actions from './actions';
 import Ticket from './Ticket';
 import Filter from './Filter';
 
-const myData = [1, 2, 3];
+function App({ searchId, data, setData, stateSort, sortCheapest, sortFastest }) {
+  const { sort } = stateSort;
 
-function App({ reduxState, sortCheapest, sortFastest }) {
-  const data = myData;
-  const { sort } = reduxState;
-
-  const ticketList = data.map((item) => (
-    <li key={item}>
-      <Ticket />
-    </li>
-  ));
+  const ticketList = data.map((item, index) => {
+    if (index < 5) {
+      return (
+        <li key={uniqid()}>
+          <Ticket item={item} />
+        </li>
+      );
+    }
+    return false;
+  });
 
   const sortButtons = (
     <>
@@ -38,6 +41,10 @@ function App({ reduxState, sortCheapest, sortFastest }) {
     </>
   );
 
+  useEffect(() => {
+    setData(searchId);
+  }, [searchId, setData]);
+
   return (
     <div className="App">
       <header className="header">
@@ -56,13 +63,16 @@ function App({ reduxState, sortCheapest, sortFastest }) {
 
 const mapStateToProps = (state) => {
   return {
-    reduxState: state.sort,
+    searchId: state.searchId,
+    data: state.data,
+    stateSort: state.sort,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
-  const { sortCheapest, sortFastest } = bindActionCreators(actions, dispatch);
+  const { setData, sortCheapest, sortFastest } = bindActionCreators(actions, dispatch);
   return {
+    setData,
     sortCheapest,
     sortFastest,
   };
@@ -71,7 +81,10 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(mapStateToProps, mapDispatchToProps)(App);
 
 App.propTypes = {
-  reduxState: PropTypes.objectOf(PropTypes.object).isRequired,
+  searchId: PropTypes.string.isRequired,
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  setData: PropTypes.func.isRequired,
+  stateSort: PropTypes.objectOf(PropTypes.string).isRequired,
   sortCheapest: PropTypes.func.isRequired,
   sortFastest: PropTypes.func.isRequired,
 };

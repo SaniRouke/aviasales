@@ -63,10 +63,23 @@ const reducerSort = (
   }
 };
 
+const reducerData = (data = [], action) => {
+  switch (action.type) {
+    case 'SET__DATA':
+      return action.tickets;
+
+    default:
+      return data;
+  }
+};
+
 const reducer = (state = {}, action) => {
   return {
+    searchId: '4vc9i',
+    data: reducerData(state.data, action),
     sort: reducerSort(state.sort, action),
     filters: reducerFilters(state.filters, action),
   };
 };
+
 export default reducer;
