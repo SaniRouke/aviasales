@@ -13,8 +13,8 @@ function App({ searchId, data, setData, stateSort, sortCheapest, sortFastest }) 
 
   const sortedData =
     sort === 'fastest'
-      ? data.sort((a, b) => (a.segments[0].duration > b.segments[0].duration ? 1 : -1))
-      : data.sort((a, b) => (a.price > b.price ? 1 : -1));
+      ? data.sort((prev, next) => (prev.segments[0].duration > next.segments[0].duration ? 1 : -1))
+      : data.sort((prev, next) => (prev.price > next.price ? 1 : -1));
   const ticketList = sortedData.map((item, index) => {
     if (index < 5) {
       return (
