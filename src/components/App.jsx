@@ -11,7 +11,11 @@ import Filter from './Filter';
 function App({ searchId, data, setData, stateSort, sortCheapest, sortFastest }) {
   const { sort } = stateSort;
 
-  const ticketList = data.map((item, index) => {
+  const sortedData =
+    sort === 'fastest'
+      ? data.sort((a, b) => (a.segments[0].duration > b.segments[0].duration ? 1 : -1))
+      : data.sort((a, b) => (a.price > b.price ? 1 : -1));
+  const ticketList = sortedData.map((item, index) => {
     if (index < 5) {
       return (
         <li key={uniqid()}>
