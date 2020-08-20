@@ -1,47 +1,17 @@
 const reducerFilters = (
-  filters = {
-    all: true,
-    without: true,
-    one: true,
-    two: true,
+  filter = {
+    checkedList: [],
+    checkAll: true,
   },
   action
 ) => {
   switch (action.type) {
-    case 'FILTER__UN-ALL':
-      if (action.bool === true) {
-        return { ...filters, all: true };
-      }
-      if (action.bool === false) {
-        return { ...filters, all: false };
-      }
-      return { ...filters, all: !filters.all };
-    case 'FILTER__UN-WITHOUT':
-      if (action.bool === true) {
-        return { ...filters, without: true };
-      }
-      if (action.bool === false) {
-        return { ...filters, without: false };
-      }
-      return { ...filters, without: !filters.without };
-    case 'FILTER__UN-ONE':
-      if (action.bool === true) {
-        return { ...filters, one: true };
-      }
-      if (action.bool === false) {
-        return { ...filters, one: false };
-      }
-      return { ...filters, one: !filters.one };
-    case 'FILTER__UN-TWO':
-      if (action.bool === true) {
-        return { ...filters, two: true };
-      }
-      if (action.bool === false) {
-        return { ...filters, two: false };
-      }
-      return { ...filters, two: !filters.two };
+    case 'SET__CHECKED__LIST':
+      return { ...filter, checkedList: action.list };
+    case 'SET__CHECKED__ALL':
+      return { ...filter, checkAll: action.checked };
     default:
-      return filters;
+      return filter;
   }
 };
 
@@ -78,7 +48,7 @@ const reducer = (state = {}, action) => {
     searchId: '4vc9i',
     data: reducerData(state.data, action),
     sort: reducerSort(state.sort, action),
-    filters: reducerFilters(state.filters, action),
+    filter: reducerFilters(state.filter, action),
   };
 };
 

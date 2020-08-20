@@ -1,110 +1,62 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Checkbox } from 'antd';
 import * as actions from './actions';
 
-function Filter({ filters, setAll, setWithout, setOne, setTwo }) {
-  const { all, without, one, two } = filters;
+const CheckboxGroup = Checkbox.Group;
+const filters = ['Без пересадок', '1 пересадка', '2 пересадки', '3 пересадки'];
 
-  const setlectedAll = without && one && two;
+function Filter({ filter, setCheckedList, setCheckedAll }) {
+  const { checkedList, checkAll } = filter;
+
+  useEffect(() => {
+    setCheckedList(filters);
+  }, [setCheckedList]);
+
+  const onChange = (currentCheckedList) => {
+    setCheckedList(currentCheckedList);
+    setCheckedAll(currentCheckedList.length === filters.length);
+  };
+
+  const onCheckAllChange = (event) => {
+    const isChecked = event.target.checked;
+    setCheckedList(isChecked ? filters : []);
+    setCheckedAll(isChecked);
+  };
 
   return (
     <aside className="sidebar">
       <h4 className="sidebar__header">Количество пересадок</h4>
-      <input
-        id="checkbox-all"
-        type="checkbox"
-        className="sidebar__checkbox"
-        checked={all}
-        onChange={() => {
-          setAll();
-          setWithout(!all);
-          setOne(!all);
-          setTwo(!all);
-        }}
-      />
-      <label htmlFor="checkbox-all" className="sidebar__label">
+      <Checkbox className="sidebar__Checkbox-all" onChange={onCheckAllChange} checked={checkAll}>
         Все
-      </label>
-      <input
-        id="checkbox-without"
-        type="checkbox"
-        className="sidebar__checkbox"
-        checked={without}
-        onChange={() => {
-          if (setlectedAll) {
-            setAll(false);
-          }
-          if (one && two && without === false) {
-            setAll(true);
-          }
-          setWithout();
-        }}
-      />
-      <label htmlFor="checkbox-without" className="sidebar__label">
-        Без пересадок
-      </label>
-      <input
-        id="checkbox-one"
-        type="checkbox"
-        className="sidebar__checkbox"
-        checked={one}
-        onChange={() => {
-          if (setlectedAll) {
-            setAll(false);
-          }
-          if (without && two && one === false) {
-            setAll(true);
-          }
-          setOne();
-        }}
-      />
-      <label htmlFor="checkbox-one" className="sidebar__label">
-        С одной пересадкой
-      </label>
-      <input
-        id="checkbox-two"
-        type="checkbox"
-        className="sidebar__checkbox"
-        checked={two}
-        onChange={() => {
-          if (setlectedAll) {
-            setAll(false);
-          }
-          if (one && without && two === false) {
-            setAll(true);
-          }
-          setTwo();
-        }}
-      />
-      <label htmlFor="checkbox-two" className="sidebar__label">
-        С двумя пересадками
-      </label>
+      </Checkbox>
+      <CheckboxGroup className="sidebar__CheckboxGroup" options={filters} value={checkedList} onChange={onChange} />
     </aside>
   );
 }
 
 const mapStateToProps = (state) => {
   return {
-    filters: state.filters,
+    filter: state.filter,
   };
 };
 const mapDispatchToProps = (dispatch) => {
-  const { setAll, setWithout, setOne, setTwo } = bindActionCreators(actions, dispatch);
+  const { setCheckedList, setCheckedAll } = bindActionCreators(actions, dispatch);
   return {
-    setAll,
-    setWithout,
-    setOne,
-    setTwo,
+    setCheckedList,
+    setCheckedAll,
   };
 };
+
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);
 
 Filter.propTypes = {
-  filters: PropTypes.objectOf(PropTypes.bool).isRequired,
-  setAll: PropTypes.func.isRequired,
-  setWithout: PropTypes.func.isRequired,
-  setOne: PropTypes.func.isRequired,
-  setTwo: PropTypes.func.isRequired,
+  filter: PropTypes.shape({
+    checkedList: PropTypes.arrayOf(PropTypes.string),
+    checkAll: PropTypes.bool,
+  }).isRequired,
+  setCheckedList: PropTypes.func.isRequired,
+  setCheckedAll: PropTypes.func.isRequired,
 };

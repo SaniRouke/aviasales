@@ -66,40 +66,44 @@ ul {
     text-transform: uppercase;
   }
 
-  &__label {
-    width: 100%;
+  & label {
     margin-top: 20px;
-    display: inline-flex;
-    align-items: center;
-    user-select: none;
-    font-size: 13px;
-    line-height: 20px;
+
+    & input {
+      position: absolute;
+      z-index: -1;
+      opacity: 0;
+
+      & + span {
+        content: '';
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+        flex-grow: 0;
+        border: 1px solid #9abbce;
+        border-radius: 0.2em;
+        margin-right: 0.6em;
+        background-repeat: no-repeat;
+        background-position: 60% 40%;
+        background-size: 70% 70%;
+      }
+
+      &:checked + span {
+        border-color: #2196f3;
+        background-image: url('../img/Shape.svg');
+      }
+    }
+
+    & span:last-of-type {
+      font-size: 13px;
+      line-height: 20px;
+    }
   }
 
-  &__checkbox {
-    position: absolute;
-    z-index: -1;
-    opacity: 0;
-
-    & + label::before {
-      content: '';
-      display: inline-block;
-      width: 1em;
-      height: 1em;
-      flex-shrink: 0;
-      flex-grow: 0;
-      border: 1px solid #9abbce;
-      border-radius: 0.2em;
-      margin-right: 0.5em;
-      background-repeat: no-repeat;
-      background-position: center center;
-      background-size: 50% 50%;
-    }
-
-    &:checked + label::before {
-      border-color: #2196f3;
-      background-image: url('../img/Shape.svg');
-    }
+  &__CheckboxGroup {
+    display: flex;
+    flex-direction: column;
   }
 }
 .ticket-list-wrapper {
