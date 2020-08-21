@@ -115,24 +115,25 @@ ul {
   display: grid;
   grid-template-columns: 1fr 1fr;
   height: 50px;
-}
-.sort__btn {
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 20px;
-  text-align: center;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  color: #4a4a4a;
-  background: white;
-  border: 1px solid #dfe5ec;
-  &:focus {
-    outline: none;
-  }
-  &--active {
-    color: #ffffff;
-    background: #2196f3;
+
+  &__btn {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 20px;
+    text-align: center;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #4a4a4a;
+    background: white;
+    border: 1px solid #dfe5ec;
+    &:focus {
+      outline: none;
+    }
+    &--active {
+      color: #ffffff;
+      background: #2196f3;
+    }
   }
 }
 .btn-cheapest {
@@ -142,6 +143,10 @@ ul {
 .btn-fastest {
   border-left: none;
   border-radius: 0 7px 7px 0;
+}
+.skeleton {
+  margin-top: 20px;
+  height: 200px;
 }
 .ticket-list {
   display: grid;

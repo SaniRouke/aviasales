@@ -43,9 +43,19 @@ const reducerData = (data = [], action) => {
   }
 };
 
+const reducerLoading = (data = true, action) => {
+  switch (action.type) {
+    case 'SET__LOADING':
+      return action.isLoading;
+
+    default:
+      return data;
+  }
+};
+
 const reducer = (state = {}, action) => {
   return {
-    searchId: '4vc9i',
+    isLoading: reducerLoading(state.isLoading, action),
     data: reducerData(state.data, action),
     sort: reducerSort(state.sort, action),
     filter: reducerFilters(state.filter, action),

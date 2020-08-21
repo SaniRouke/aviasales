@@ -6,24 +6,25 @@ import { Checkbox } from 'antd';
 import * as actions from './actions';
 
 const CheckboxGroup = Checkbox.Group;
-const filters = ['Без пересадок', '1 пересадка', '2 пересадки', '3 пересадки'];
+const allFilters = ['Без пересадок', '1 пересадка', '2 пересадки', '3 пересадки'];
+const defaultFilters = ['Без пересадок', '1 пересадка', '2 пересадки', '3 пересадки'];
 
-function Filter({ filter, setCheckedList, setCheckedAll }) {
-  const { checkedList, checkAll } = filter;
+function Filter({ stateFilter, setCheckedList, setCheckedAll }) {
+  const { checkedList, checkAll } = stateFilter;
 
   useEffect(() => {
-    setCheckedList(filters);
+    setCheckedList(defaultFilters);
   }, [setCheckedList]);
 
-  const onChange = (currentCheckedList) => {
-    setCheckedAll(currentCheckedList.length === filters.length);
-    setCheckedList(currentCheckedList);
+  const onChange = (checkList) => {
+    setCheckedAll(checkList.length === allFilters.length);
+    setCheckedList(checkList);
   };
 
   const onCheckAllChange = (event) => {
     const isChecked = event.target.checked;
     setCheckedAll(isChecked);
-    setCheckedList(isChecked ? filters : []);
+    setCheckedList(isChecked ? allFilters : []);
   };
 
   return (
@@ -32,14 +33,14 @@ function Filter({ filter, setCheckedList, setCheckedAll }) {
       <Checkbox className="sidebar__Checkbox-all" onChange={onCheckAllChange} checked={checkAll}>
         Все
       </Checkbox>
-      <CheckboxGroup className="sidebar__CheckboxGroup" options={filters} value={checkedList} onChange={onChange} />
+      <CheckboxGroup className="sidebar__CheckboxGroup" options={allFilters} value={checkedList} onChange={onChange} />
     </aside>
   );
 }
 
 const mapStateToProps = (state) => {
   return {
-    filter: state.filter,
+    stateFilter: state.filter,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -53,7 +54,7 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);
 
 Filter.propTypes = {
-  filter: PropTypes.shape({
+  stateFilter: PropTypes.shape({
     checkedList: PropTypes.arrayOf(PropTypes.string),
     checkAll: PropTypes.bool,
   }).isRequired,

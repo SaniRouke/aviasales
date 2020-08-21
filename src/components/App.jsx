@@ -1,29 +1,36 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './App.scss';
+import 'antd/es/spin/style/index.css';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import uniqid from 'uniqid';
+import { Spin } from 'antd';
 import * as actions from './actions';
 import Ticket from './Ticket';
 import Filter from './Filter';
 
-const withFilter = (data, checkedList, name) =>
-  !checkedList.includes(name)
+const allFilters = ['Без пересадок', '1 пересадка', '2 пересадки', '3 пересадки'];
+
+const withFilters = (data, checkedList, filters) => (checkboxNumber) => {
+  return !checkedList.includes(filters[checkboxNumber])
     ? []
     : data.filter((ticket) => {
         const stopsCount = ticket.segments[0].stops.length;
-        return stopsCount === 0;
+        return stopsCount === checkboxNumber;
       });
+};
 
-function App({ searchId, data, filter, setData, stateSort, sortCheapest, sortFastest }) {
+function App({ data, isLoading, filter, setData, stateSort, sortCheapest, sortFastest }) {
   const { checkedList } = filter;
   const { sort } = stateSort;
 
-  const without = withFilter(data, checkedList, 'Без пересадок');
-  const one = withFilter(data, checkedList, '1 пересадка');
-  const two = withFilter(data, checkedList, '2 пересадки');
-  const three = withFilter(data, checkedList, '3 пересадки');
+  const func = withFilters(data, checkedList, allFilters);
+
+  const without = func(0);
+  const one = func(1);
+  const two = func(2);
+  const three = func(3);
   const filteredData = [...without, ...one, ...two, ...three];
 
   const sortedData =
@@ -59,8 +66,10 @@ function App({ searchId, data, filter, setData, stateSort, sortCheapest, sortFas
   );
 
   useEffect(() => {
-    setData(searchId);
-  }, [searchId, setData]);
+    setData();
+  }, [setData]);
+
+  const skeleton = <div className="skeleton" />;
 
   return (
     <div className="App">
@@ -71,7 +80,9 @@ function App({ searchId, data, filter, setData, stateSort, sortCheapest, sortFas
         <Filter />
         <section className="ticket-list-wrapper">
           <div className="sort">{sortButtons}</div>
-          <ul className="ticket-list">{ticketList}</ul>
+          <Spin spinning={isLoading} size="large">
+            <ul className="ticket-list">{isLoading ? skeleton : ticketList}</ul>
+          </Spin>
         </section>
       </main>
     </div>
@@ -81,6 +92,7 @@ function App({ searchId, data, filter, setData, stateSort, sortCheapest, sortFas
 const mapStateToProps = (state) => {
   return {
     searchId: state.searchId,
+    isLoading: state.isLoading,
     data: state.data,
     filter: state.filter,
     stateSort: state.sort,
@@ -99,7 +111,7 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(mapStateToProps, mapDispatchToProps)(App);
 
 App.propTypes = {
-  searchId: PropTypes.string.isRequired,
+  isLoading: PropTypes.bool.isRequired,
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   filter: PropTypes.shape({
     checkedList: PropTypes.arrayOf(PropTypes.string),

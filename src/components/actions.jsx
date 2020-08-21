@@ -1,10 +1,13 @@
-// export const setData = (data) => ({ type: 'SET__DATA', data });
+import { getSearchId, getData } from '../services/aviasalesApi';
+
+export const setLoading = (isLoading) => ({ type: 'SET__LOADING', isLoading });
+
 export const setData = () => async (dispatch) => {
-  const idResponse = await fetch('https://front-test.beta.aviasales.ru/search');
-  const id = await idResponse.json();
-  const dataResponse = await fetch(`https://front-test.beta.aviasales.ru/tickets?searchId=${id.searchId}`);
-  const { tickets } = await dataResponse.json();
+  dispatch(setLoading(true));
+  const id = await getSearchId();
+  const tickets = await getData(id);
   dispatch({ type: 'SET__DATA', tickets });
+  dispatch(setLoading(false));
 };
 
 export const sortCheapest = () => ({ type: 'SORT__CHEAPEST' });
