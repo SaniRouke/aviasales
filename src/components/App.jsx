@@ -8,22 +8,35 @@ import * as actions from './actions';
 import Ticket from './Ticket';
 import Filter from './Filter';
 
-function App({ searchId, data, setData, stateSort, sortCheapest, sortFastest }) {
+const withFilter = (data, checkedList, name) =>
+  !checkedList.includes(name)
+    ? []
+    : data.filter((ticket) => {
+        const stopsCount = ticket.segments[0].stops.length;
+        return stopsCount === 0;
+      });
+
+function App({ searchId, data, filter, setData, stateSort, sortCheapest, sortFastest }) {
+  const { checkedList } = filter;
   const { sort } = stateSort;
+
+  const without = withFilter(data, checkedList, 'Без пересадок');
+  const one = withFilter(data, checkedList, '1 пересадка');
+  const two = withFilter(data, checkedList, '2 пересадки');
+  const three = withFilter(data, checkedList, '3 пересадки');
+  const filteredData = [...without, ...one, ...two, ...three];
 
   const sortedData =
     sort === 'fastest'
-      ? data.sort((prev, next) => (prev.segments[0].duration > next.segments[0].duration ? 1 : -1))
-      : data.sort((prev, next) => (prev.price > next.price ? 1 : -1));
-  const ticketList = sortedData.map((item, index) => {
-    if (index < 5) {
-      return (
-        <li key={uniqid()}>
-          <Ticket item={item} />
-        </li>
-      );
-    }
-    return false;
+      ? filteredData.sort((prev, next) => (prev.segments[0].duration > next.segments[0].duration ? 1 : -1))
+      : filteredData.sort((prev, next) => (prev.price > next.price ? 1 : -1));
+
+  const ticketList = sortedData.map((item) => {
+    return (
+      <li key={uniqid()}>
+        <Ticket item={item} />
+      </li>
+    );
   });
 
   const sortButtons = (
@@ -69,6 +82,7 @@ const mapStateToProps = (state) => {
   return {
     searchId: state.searchId,
     data: state.data,
+    filter: state.filter,
     stateSort: state.sort,
   };
 };
@@ -87,6 +101,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(App);
 App.propTypes = {
   searchId: PropTypes.string.isRequired,
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  filter: PropTypes.shape({
+    checkedList: PropTypes.arrayOf(PropTypes.string),
+  }).isRequired,
   setData: PropTypes.func.isRequired,
   stateSort: PropTypes.objectOf(PropTypes.string).isRequired,
   sortCheapest: PropTypes.func.isRequired,

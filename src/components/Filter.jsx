@@ -16,14 +16,14 @@ function Filter({ filter, setCheckedList, setCheckedAll }) {
   }, [setCheckedList]);
 
   const onChange = (currentCheckedList) => {
-    setCheckedList(currentCheckedList);
     setCheckedAll(currentCheckedList.length === filters.length);
+    setCheckedList(currentCheckedList);
   };
 
   const onCheckAllChange = (event) => {
     const isChecked = event.target.checked;
-    setCheckedList(isChecked ? filters : []);
     setCheckedAll(isChecked);
+    setCheckedList(isChecked ? filters : []);
   };
 
   return (
