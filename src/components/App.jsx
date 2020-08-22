@@ -11,6 +11,7 @@ import Ticket from './Ticket';
 import Filter from './Filter';
 import Empty from './Empty';
 import Error from './Error';
+import Progress from './Progress';
 
 const allFilters = ['Без пересадок', '1 пересадка', '2 пересадки', '3 пересадки'];
 
@@ -87,6 +88,7 @@ function App({ data, isLoading, error, filter, setData, stateSort, sortCheapest,
 
   return (
     <div className="App">
+      <Progress />
       <header className="header">
         <div className="logo" />
       </header>

@@ -5,6 +5,7 @@
   box-sizing: border-box;
 }
 body {
+  position: relative;
   background-color: #f3f7fa;
 }
 ul {
@@ -32,6 +33,12 @@ ul {
     background-color: #2195f342;
   }
 }
+// antd styles
+.ant-progress-status-success {
+  transition: 1s;
+  opacity: 0;
+}
+//
 .App {
   min-height: 100vh;
   height: 100%;

@@ -36,7 +36,7 @@ const reducerSort = (
 const reducerData = (data = [], action) => {
   switch (action.type) {
     case 'SET__DATA':
-      return action.tickets;
+      return [...data, ...action.tickets];
 
     default:
       return data;
@@ -52,6 +52,15 @@ const reducerLoading = (loading = true, action) => {
       return loading;
   }
 };
+const reducerProgress = (progress = 0, action) => {
+  switch (action.type) {
+    case 'SET__PROGRESS':
+      return action.progress;
+
+    default:
+      return progress;
+  }
+};
 const reducerError = (error = null, action) => {
   switch (action.type) {
     case 'SET__ERROR':
@@ -65,6 +74,7 @@ const reducerError = (error = null, action) => {
 const reducer = (state = {}, action) => {
   return {
     isLoading: reducerLoading(state.isLoading, action),
+    progress: reducerProgress(state.progress, action),
     error: reducerError(state.error, action),
     data: reducerData(state.data, action),
     sort: reducerSort(state.sort, action),
