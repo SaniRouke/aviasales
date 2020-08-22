@@ -9,6 +9,8 @@ import { Spin } from 'antd';
 import * as actions from './actions';
 import Ticket from './Ticket';
 import Filter from './Filter';
+import Empty from './Empty';
+import Error from './Error';
 
 const allFilters = ['Без пересадок', '1 пересадка', '2 пересадки', '3 пересадки'];
 
@@ -21,7 +23,25 @@ const withFilters = (data, checkedList, filters) => (checkboxNumber) => {
       });
 };
 
-function App({ data, isLoading, filter, setData, stateSort, sortCheapest, sortFastest }) {
+const listInner = (error, data) => {
+  if (error) {
+    return <Error />;
+  }
+  if (data.length === 0) {
+    return <Empty />;
+  }
+  return data
+    .filter((item, index) => index < 5)
+    .map((item) => {
+      return (
+        <li key={uniqid()}>
+          <Ticket item={item} />
+        </li>
+      );
+    });
+};
+
+function App({ data, isLoading, error, filter, setData, stateSort, sortCheapest, sortFastest }) {
   const { checkedList } = filter;
   const { sort } = stateSort;
 
@@ -37,14 +57,6 @@ function App({ data, isLoading, filter, setData, stateSort, sortCheapest, sortFa
     sort === 'fastest'
       ? filteredData.sort((prev, next) => (prev.segments[0].duration > next.segments[0].duration ? 1 : -1))
       : filteredData.sort((prev, next) => (prev.price > next.price ? 1 : -1));
-
-  const ticketList = sortedData.map((item) => {
-    return (
-      <li key={uniqid()}>
-        <Ticket item={item} />
-      </li>
-    );
-  });
 
   const sortButtons = (
     <>
@@ -64,6 +76,8 @@ function App({ data, isLoading, filter, setData, stateSort, sortCheapest, sortFa
       </button>
     </>
   );
+
+  const ticketList = listInner(error, sortedData);
 
   useEffect(() => {
     setData();
@@ -93,6 +107,7 @@ const mapStateToProps = (state) => {
   return {
     searchId: state.searchId,
     isLoading: state.isLoading,
+    error: state.error,
     data: state.data,
     filter: state.filter,
     stateSort: state.sort,
@@ -110,9 +125,14 @@ const mapDispatchToProps = (dispatch) => {
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
 
+App.defaultProps = {
+  error: null,
+};
+
 App.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  error: PropTypes.instanceOf(Error),
   filter: PropTypes.shape({
     checkedList: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,

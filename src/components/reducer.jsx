@@ -43,19 +43,29 @@ const reducerData = (data = [], action) => {
   }
 };
 
-const reducerLoading = (data = true, action) => {
+const reducerLoading = (loading = true, action) => {
   switch (action.type) {
     case 'SET__LOADING':
       return action.isLoading;
 
     default:
-      return data;
+      return loading;
+  }
+};
+const reducerError = (error = null, action) => {
+  switch (action.type) {
+    case 'SET__ERROR':
+      return action.error;
+
+    default:
+      return error;
   }
 };
 
 const reducer = (state = {}, action) => {
   return {
     isLoading: reducerLoading(state.isLoading, action),
+    error: reducerError(state.error, action),
     data: reducerData(state.data, action),
     sort: reducerSort(state.sort, action),
     filter: reducerFilters(state.filter, action),
