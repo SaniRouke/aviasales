@@ -4,13 +4,11 @@ import './App.scss';
 import 'antd/es/spin/style/index.css';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import uniqid from 'uniqid';
 import { Spin } from 'antd';
 import * as actions from './actions';
-import Ticket from './Ticket';
+import TicketList from './TicketList';
 import Filter from './Filter';
-import Empty from './Empty';
-import Error from './Error';
+import SortButtons from './SortButtons';
 import Progress from './Progress';
 
 const allFilters = ['Без пересадок', '1 пересадка', '2 пересадки', '3 пересадки'];
@@ -24,25 +22,7 @@ const withFilters = (data, checkedList, filters) => (checkboxNumber) => {
       });
 };
 
-const listInner = (error, data) => {
-  if (error) {
-    return <Error />;
-  }
-  if (data.length === 0) {
-    return <Empty />;
-  }
-  return data
-    .filter((item, index) => index < 5)
-    .map((item) => {
-      return (
-        <li key={uniqid()}>
-          <Ticket item={item} />
-        </li>
-      );
-    });
-};
-
-function App({ data, isLoading, error, filter, setData, stateSort, sortCheapest, sortFastest }) {
+function App({ data, isLoading, filter, setData, stateSort }) {
   const { checkedList } = filter;
   const { sort } = stateSort;
 
@@ -59,27 +39,6 @@ function App({ data, isLoading, error, filter, setData, stateSort, sortCheapest,
       ? filteredData.sort((prev, next) => (prev.segments[0].duration > next.segments[0].duration ? 1 : -1))
       : filteredData.sort((prev, next) => (prev.price > next.price ? 1 : -1));
 
-  const sortButtons = (
-    <>
-      <button
-        type="button"
-        className={`sort__btn btn-cheapest${sort === 'cheapest' ? ' sort__btn--active' : ''}`}
-        onClick={sortCheapest}
-      >
-        Самый дешевый
-      </button>
-      <button
-        type="button"
-        className={`sort__btn btn-fastest${sort === 'fastest' ? ' sort__btn--active' : ''}`}
-        onClick={sortFastest}
-      >
-        Самый быстрый
-      </button>
-    </>
-  );
-
-  const ticketList = listInner(error, sortedData);
-
   useEffect(() => {
     setData();
   }, [setData]);
@@ -95,9 +54,9 @@ function App({ data, isLoading, error, filter, setData, stateSort, sortCheapest,
       <main className="content">
         <Filter />
         <section className="ticket-list-wrapper">
-          <div className="sort">{sortButtons}</div>
+          <SortButtons />
           <Spin spinning={isLoading} size="large">
-            <ul className="ticket-list">{isLoading ? skeleton : ticketList}</ul>
+            <ul className="ticket-list">{isLoading ? skeleton : <TicketList data={sortedData} />}</ul>
           </Spin>
         </section>
       </main>
@@ -109,7 +68,6 @@ const mapStateToProps = (state) => {
   return {
     searchId: state.searchId,
     isLoading: state.isLoading,
-    error: state.error,
     data: state.data,
     filter: state.filter,
     stateSort: state.sort,
@@ -117,29 +75,20 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  const { setData, sortCheapest, sortFastest } = bindActionCreators(actions, dispatch);
+  const { setData } = bindActionCreators(actions, dispatch);
   return {
     setData,
-    sortCheapest,
-    sortFastest,
   };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
 
-App.defaultProps = {
-  error: null,
-};
-
 App.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
-  error: PropTypes.instanceOf(Error),
   filter: PropTypes.shape({
     checkedList: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
   setData: PropTypes.func.isRequired,
   stateSort: PropTypes.objectOf(PropTypes.string).isRequired,
-  sortCheapest: PropTypes.func.isRequired,
-  sortFastest: PropTypes.func.isRequired,
 };
