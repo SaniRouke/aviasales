@@ -150,19 +150,19 @@ ul {
     &:focus {
       outline: none;
     }
+    &--cheapest {
+      border-right: none;
+      border-radius: 7px 0 0 7px;
+    }
+    &--fastest {
+      border-left: none;
+      border-radius: 0 7px 7px 0;
+    }
     &--active {
       color: #ffffff;
       background: #2196f3;
     }
   }
-}
-.btn-cheapest {
-  border-right: none;
-  border-radius: 7px 0 0 7px;
-}
-.btn-fastest {
-  border-left: none;
-  border-radius: 0 7px 7px 0;
 }
 .skeleton {
   margin-top: 20px;

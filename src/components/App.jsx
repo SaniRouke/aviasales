@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import './App.scss';
 import 'antd/es/spin/style/index.css';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Spin } from 'antd';
-import * as actions from './actions';
+import * as actions from '../redux/actions';
 import TicketList from './TicketList';
 import Filter from './Filter';
 import SortButtons from './SortButtons';
@@ -26,13 +26,11 @@ function App({ data, isLoading, filter, setData, stateSort }) {
   const { checkedList } = filter;
   const { sort } = stateSort;
 
-  const func = withFilters(data, checkedList, allFilters);
+  const oneOfTheFilters = withFilters(data, checkedList, allFilters);
 
-  const without = func(0);
-  const one = func(1);
-  const two = func(2);
-  const three = func(3);
-  const filteredData = [...without, ...one, ...two, ...three];
+  const filteredData = useMemo(() => {
+    return allFilters.reduce((acc, filterName, checkboxNumber) => [...acc, ...oneOfTheFilters(checkboxNumber)], []);
+  }, [oneOfTheFilters]);
 
   const sortedData =
     sort === 'fastest'

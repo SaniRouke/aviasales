@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Checkbox } from 'antd';
-import * as actions from './actions';
+import * as actions from '../redux/actions';
 
 const CheckboxGroup = Checkbox.Group;
 const allFilters = ['Без пересадок', '1 пересадка', '2 пересадки', '3 пересадки'];

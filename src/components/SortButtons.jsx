@@ -1,25 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import cn from 'classnames';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as actions from './actions';
+import * as actions from '../redux/actions';
 
 function SortButtons({ stateSort, sortCheapest, sortFastest }) {
   const { sort } = stateSort;
+  const cheapestClassNames = cn({
+    sort__btn: true,
+    'sort__btn--cheapest': true,
+    'sort__btn--active': sort === 'cheapest',
+  });
+
+  const fastestClassNames = cn({
+    sort__btn: true,
+    'sort__btn--fastest': true,
+    'sort__btn--active': sort === 'fastest',
+  });
+
   return (
     <div className="sort">
-      <button
-        type="button"
-        className={`sort__btn btn-cheapest${sort === 'cheapest' ? ' sort__btn--active' : ''}`}
-        onClick={sortCheapest}
-      >
+      <button type="button" className={cheapestClassNames} onClick={sortCheapest}>
         Самый дешевый
       </button>
-      <button
-        type="button"
-        className={`sort__btn btn-fastest${sort === 'fastest' ? ' sort__btn--active' : ''}`}
-        onClick={sortFastest}
-      >
+      <button type="button" className={fastestClassNames} onClick={sortFastest}>
         Самый быстрый
       </button>
     </div>

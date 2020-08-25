@@ -3,14 +3,11 @@ export const getSearchId = async () => {
   return response.json();
 };
 
-export const getData = async (id) => {
-  const response = await fetch(`https://front-test.beta.aviasales.ru/tickets?searchId=${id.searchId}`);
+export const getData = async (searchId) => {
+  const response = await fetch(`https://front-test.beta.aviasales.ru/tickets?searchId=${searchId}`);
   if (!response.ok) {
     return [];
   }
-  const { tickets, stop } = await response.json();
-  if (stop) {
-    return false;
-  }
-  return tickets;
+  const jsonResponse = await response.json();
+  return jsonResponse;
 };
