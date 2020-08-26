@@ -6,15 +6,15 @@ import { Checkbox } from 'antd';
 import * as actions from '../redux/actions';
 
 const CheckboxGroup = Checkbox.Group;
-const allFilters = ['Без пересадок', '1 пересадка', '2 пересадки', '3 пересадки'];
-const defaultFilters = ['Без пересадок', '1 пересадка', '2 пересадки', '3 пересадки'];
 
-function Filter({ stateFilter, setCheckedList, setCheckedAll }) {
+function Filter({ filters, stateFilter, setCheckedList, setCheckedAll }) {
+  const { allFilters, defaultFilters } = filters;
   const { checkedList, checkAll } = stateFilter;
 
   useEffect(() => {
     setCheckedList(defaultFilters);
-  }, [setCheckedList]);
+    setCheckedAll(defaultFilters.length === allFilters.length);
+  }, [setCheckedList, setCheckedAll, allFilters, defaultFilters]);
 
   const onChange = (checkList) => {
     setCheckedAll(checkList.length === allFilters.length);
@@ -54,6 +54,7 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);
 
 Filter.propTypes = {
+  filters: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
   stateFilter: PropTypes.shape({
     checkedList: PropTypes.arrayOf(PropTypes.string),
     checkAll: PropTypes.bool,

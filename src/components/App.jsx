@@ -12,6 +12,7 @@ import SortButtons from './SortButtons';
 import Progress from './Progress';
 
 const allFilters = ['Без пересадок', '1 пересадка', '2 пересадки', '3 пересадки'];
+const defaultFilters = ['Без пересадок', '1 пересадка', '2 пересадки', '3 пересадки'];
 
 const withFilters = (data, checkedList, filters) => (checkboxNumber) => {
   return !checkedList.includes(filters[checkboxNumber])
@@ -52,7 +53,7 @@ function App({ data, isLoading, filter, setData, sort }) {
         <div className="logo" />
       </header>
       <main className="content">
-        <Filter />
+        <Filter filters={{ allFilters, defaultFilters }} />
         <section className="ticket-list-wrapper">
           <SortButtons />
           <Spin spinning={isLoading} size="large">
