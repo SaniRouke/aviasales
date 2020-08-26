@@ -32,10 +32,13 @@ function App({ data, isLoading, filter, setData, stateSort }) {
     return allFilters.reduce((acc, filterName, checkboxNumber) => [...acc, ...oneOfTheFilters(checkboxNumber)], []);
   }, [oneOfTheFilters]);
 
-  const sortedData =
-    sort === 'fastest'
-      ? filteredData.sort((prev, next) => (prev.segments[0].duration > next.segments[0].duration ? 1 : -1))
-      : filteredData.sort((prev, next) => (prev.price > next.price ? 1 : -1));
+  const sortedData = useMemo(
+    () =>
+      sort === 'fastest'
+        ? filteredData.sort((prev, next) => (prev.segments[0].duration > next.segments[0].duration ? 1 : -1))
+        : filteredData.sort((prev, next) => (prev.price > next.price ? 1 : -1)),
+    [filteredData, sort]
+  );
 
   useEffect(() => {
     setData();
