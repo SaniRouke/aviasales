@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import format from 'date-format';
 import addSubtractDate from 'add-subtract-date';
+import { formatToTimeZone } from 'date-fns-timezone';
 
 const getStopsCountLabel = (length) => {
   if (length === 0) {
@@ -15,9 +16,13 @@ const getStopsCountLabel = (length) => {
 
 export default function Flight({ direction }) {
   const { origin, destination, date, stops, duration } = direction;
+
   const durationTime = format.asString('hhч mmм', new Date(0, 0, 1, 0, duration));
-  const dateStart = format.asString('hh:mm', new Date(date));
-  const dateEnd = format.asString('hh:mm', addSubtractDate.add(new Date(date), duration, 'minutes'));
+  const dateStart = formatToTimeZone(new Date(date), 'hh:mm', { timeZone: 'Europe/Moscow' });
+  const dateEnd = formatToTimeZone(addSubtractDate.add(new Date(date), duration, 'minutes'), 'hh:mm', {
+    timeZone: 'Europe/Moscow',
+  });
+
   const stopsList = stops.join(', ');
   const stopsCountLabel = getStopsCountLabel(stops.length);
 
