@@ -26,8 +26,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint ./src/**.jsx ./src/components/**.jsx --color",
-    "lint:write": "eslint ./src/**.jsx ./src/components/**.jsx --fix --color"
+    "lint": "eslint --ext .js,.jsx src/ --color",
+    "lint:write": "eslint .--ext .js,.jsx src/ --fix --color"
   },
   "eslintConfig": {
     "extends": "react-app"
