@@ -15,21 +15,16 @@ const reducerFilters = (
   }
 };
 
-const reducerSort = (
-  state = {
-    sort: 'cheapest',
-  },
-  action
-) => {
+const reducerSort = (sort = 'cheapest', action) => {
   switch (action.type) {
     case 'SORT__CHEAPEST':
-      return { ...state, sort: 'cheapest' };
+      return 'cheapest';
 
     case 'SORT__FASTEST':
-      return { ...state, sort: 'fastest' };
+      return 'fastest';
 
     default:
-      return state;
+      return sort;
   }
 };
 

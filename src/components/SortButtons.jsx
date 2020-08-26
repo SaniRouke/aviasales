@@ -5,8 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from '../redux/actions';
 
-function SortButtons({ stateSort, sortCheapest, sortFastest }) {
-  const { sort } = stateSort;
+function SortButtons({ sort, sortCheapest, sortFastest }) {
   const cheapestClassNames = cn({
     sort__btn: true,
     'sort__btn--cheapest': true,
@@ -33,7 +32,7 @@ function SortButtons({ stateSort, sortCheapest, sortFastest }) {
 
 const mapStateToProps = (state) => {
   return {
-    stateSort: state.sort,
+    sort: state.sort,
   };
 };
 
@@ -48,7 +47,7 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(mapStateToProps, mapDispatchToProps)(SortButtons);
 
 SortButtons.propTypes = {
-  stateSort: PropTypes.objectOf(PropTypes.string).isRequired,
+  sort: PropTypes.string.isRequired,
   sortCheapest: PropTypes.func.isRequired,
   sortFastest: PropTypes.func.isRequired,
 };

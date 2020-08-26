@@ -22,9 +22,8 @@ const withFilters = (data, checkedList, filters) => (checkboxNumber) => {
       });
 };
 
-function App({ data, isLoading, filter, setData, stateSort }) {
+function App({ data, isLoading, filter, setData, sort }) {
   const { checkedList } = filter;
-  const { sort } = stateSort;
 
   const oneOfTheFilters = withFilters(data, checkedList, allFilters);
 
@@ -71,7 +70,7 @@ const mapStateToProps = (state) => {
     isLoading: state.isLoading,
     data: state.data,
     filter: state.filter,
-    stateSort: state.sort,
+    sort: state.sort,
   };
 };
 
@@ -91,5 +90,5 @@ App.propTypes = {
     checkedList: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
   setData: PropTypes.func.isRequired,
-  stateSort: PropTypes.objectOf(PropTypes.string).isRequired,
+  sort: PropTypes.string.isRequired,
 };
