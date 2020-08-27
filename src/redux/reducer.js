@@ -1,5 +1,7 @@
-const reducerFilters = (
-  filter = {
+import { combineReducers } from 'redux';
+
+const filter = (
+  state = {
     checkedList: [],
     checkAll: true,
   },
@@ -7,15 +9,15 @@ const reducerFilters = (
 ) => {
   switch (action.type) {
     case 'SET__CHECKED__LIST':
-      return { ...filter, checkedList: action.list };
+      return { ...state, checkedList: action.list };
     case 'SET__CHECKED__ALL':
-      return { ...filter, checkAll: action.checked };
+      return { ...state, checkAll: action.checked };
     default:
-      return filter;
+      return state;
   }
 };
 
-const reducerSort = (sort = 'cheapest', action) => {
+const sort = (state = 'cheapest', action) => {
   switch (action.type) {
     case 'SORT__CHEAPEST':
       return 'cheapest';
@@ -24,57 +26,55 @@ const reducerSort = (sort = 'cheapest', action) => {
       return 'fastest';
 
     default:
-      return sort;
+      return state;
   }
 };
 
-const reducerData = (data = [], action) => {
+const data = (state = [], action) => {
   switch (action.type) {
     case 'SET__DATA':
-      return [...data, ...action.tickets];
+      return [...state, ...action.tickets];
 
     default:
-      return data;
+      return state;
   }
 };
 
-const reducerLoading = (loading = true, action) => {
+const isLoading = (state = true, action) => {
   switch (action.type) {
     case 'SET__LOADING':
       return action.isLoading;
 
     default:
-      return loading;
+      return state;
   }
 };
-const reducerProgress = (progress = 0, action) => {
+const progress = (state = 0, action) => {
   switch (action.type) {
     case 'SET__PROGRESS':
       return action.progress;
 
     default:
-      return progress;
+      return state;
   }
 };
-const reducerError = (error = null, action) => {
+const error = (state = null, action) => {
   switch (action.type) {
     case 'SET__ERROR':
       return action.error;
 
     default:
-      return error;
+      return state;
   }
 };
 
-const reducer = (state = {}, action) => {
-  return {
-    isLoading: reducerLoading(state.isLoading, action),
-    progress: reducerProgress(state.progress, action),
-    error: reducerError(state.error, action),
-    data: reducerData(state.data, action),
-    sort: reducerSort(state.sort, action),
-    filter: reducerFilters(state.filter, action),
-  };
-};
+const reducer = combineReducers({
+  isLoading,
+  progress,
+  error,
+  data,
+  sort,
+  filter,
+});
 
 export default reducer;
